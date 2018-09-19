@@ -1,7 +1,11 @@
 import React from 'react'
 import Logo from '../../component/logo/logo'
 import {InputItem,WingBlank,WhiteSpace,Button,List,Radio} from 'antd-mobile'
+import {register} from '../../redux/user.redux'
+import { connect } from 'react-redux';
+import Axios from 'axios';
 
+@connect(state=>state.user,{register})
 class Register extends React.Component{
     constructor(props){
         super(props)
@@ -14,13 +18,17 @@ class Register extends React.Component{
         this.handleRegister=this.handleRegister.bind(this)
     }
     handleChange(key,val){
-        console.log(val)
+        // console.log(val)
         this.setState({
             [key]:val
         })
     }
     handleRegister(){
-
+        this.props.register(this.state)
+        // console.log(this.state)
+        Axios.get('/user/info',function(res){
+            console.log(res)
+        })
     }
     render(){
         const RedioItem=Radio.RadioItem
@@ -29,14 +37,15 @@ class Register extends React.Component{
                 <Logo/>
                 <WingBlank>
                     <List>
-                        <InputItem onClick={(v)=>this.handleChange('user',v)}>用户名</InputItem>
-                        <InputItem onClick={(v)=>this.handleChange('pwd',v)}>密码</InputItem>
-                        <InputItem onClick={(v)=>this.handleChange('repeatpwd',v)}>确认密码</InputItem>
+                        {this.props.msg?<p className='err-msg'>{this.props.msg}</p>:null}
+                        <InputItem onChange={(v)=>this.handleChange('user',v)}>用户名</InputItem>
+                        <InputItem type='password' onChange={(v)=>this.handleChange('pwd',v)}>密码</InputItem>
+                        <InputItem type='password' onChange={(v)=>this.handleChange('repeatpwd',v)}>确认密码</InputItem>
                     </List>
                     <WhiteSpace/>
                     <List>
-                        <RedioItem onClick={()=>this.handleChange('type','genius')} checked={this.state.type==='genius'}>牛人</RedioItem>
-                        <RedioItem onClick={()=>this.handleChange('type','boss')} checked={this.state.type==='boss'}>BOSS</RedioItem>
+                        <RedioItem onChange={()=>this.handleChange('type','genius')} checked={this.state.type==='genius'}>牛人</RedioItem>
+                        <RedioItem onChange={()=>this.handleChange('type','boss')} checked={this.state.type==='boss'}>BOSS</RedioItem>
                     </List>
                     <WhiteSpace/>
                     <Button onClick={this.handleRegister} type='primary'>注册</Button>

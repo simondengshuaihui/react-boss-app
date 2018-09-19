@@ -7,8 +7,9 @@ import reducers from './reducers'
 import thunk from 'redux-thunk'
 import './config'
 import Login from './container/login/login'
-import Register from './container/register/Register';
+import Register from './container/register/Register'
 import AuthRouter from './component/authRouter/authRouter'
+import './index.css'
 
 
 const store=createStore(reducers,compose(applyMiddleware(thunk),window.devToolsExtension?window.devToolsExtension():f=>f))
@@ -16,12 +17,12 @@ const store=createStore(reducers,compose(applyMiddleware(thunk),window.devToolsE
 ReactDOM.render((
     <Provider store={store}>
         <BrowserRouter>
-            <Switch>
+            <div>
                 <AuthRouter></AuthRouter>
                 <Route path='/login' component={Login}></Route>
                 <Route path='/register' component={Register}></Route>
-                <Redirect to='/login'></Redirect>
-            </Switch>
+                {/* <Redirect to='/login'></Redirect> */}
+            </div>
         </BrowserRouter>
     </Provider>
 ), document.getElementById('root'));

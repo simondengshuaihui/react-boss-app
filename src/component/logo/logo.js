@@ -3,9 +3,9 @@ import './logo.css'
 import LogoImg from './job.png'
 
 class Logo extends React.Component{
-    constructor(props){
-        super(props)
-    }
+    // constructor(props){
+    //     super(props)
+    // }
     render(){
         return (
             <div className='logo-contanier'>
