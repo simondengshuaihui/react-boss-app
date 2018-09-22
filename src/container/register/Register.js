@@ -4,6 +4,7 @@ import {InputItem,WingBlank,WhiteSpace,Button,List,Radio} from 'antd-mobile'
 import {register} from '../../redux/user.redux'
 import { connect } from 'react-redux';
 import Axios from 'axios';
+import {Redirect} from 'react-router-dom'
 
 @connect(state=>state.user,{register})
 class Register extends React.Component{
@@ -26,14 +27,15 @@ class Register extends React.Component{
     handleRegister(){
         this.props.register(this.state)
         // console.log(this.state)
-        Axios.get('/user/info',function(res){
-            console.log(res)
-        })
+        // Axios.get('/user/info',function(res){
+        //     console.log(res)
+        // })
     }
     render(){
         const RedioItem=Radio.RadioItem
         return (
             <div>
+                {this.props.redirectTo?<Redirect to={this.props.redirectTo}/>:null}
                 <Logo/>
                 <WingBlank>
                     <List>

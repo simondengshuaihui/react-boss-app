@@ -1,7 +1,10 @@
 import React from 'react'
 import axios from 'axios'
 import {withRouter} from 'react-router-dom'
-
+import {loadData} from '../../redux/user.redux'
+import { connect } from 'net';
+@withRouter
+@connect(null,{loadData})
 
 class AuthRouter extends React.Component{
     constructor(props){
@@ -19,7 +22,7 @@ class AuthRouter extends React.Component{
             // console.log(props)
             if(res.status===200){
                 if(res.data.code===0){
-
+                    this.props.loadData(res.data.data)
                 }else{
                     this.props.history.push('/login')
                 }

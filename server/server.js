@@ -1,11 +1,11 @@
 const express = require("express");
 const userRouter = require('./user')
 const cookieParser= require('cookie-parser')
-const bodyParder=require('body-parser')
+const bodyParder=require('body-parser')//使用post请求的时候用到
 // 新建app
 const app=express()
 app.use(cookieParser())
-app.use(bodyParder.json())
+app.use(bodyParder.json()) //可以解析post的json
 app.use('/user',userRouter)
 
 

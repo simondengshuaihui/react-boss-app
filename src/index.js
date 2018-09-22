@@ -9,6 +9,7 @@ import './config'
 import Login from './container/login/login'
 import Register from './container/register/Register'
 import AuthRouter from './component/authRouter/authRouter'
+import BossInfo from './container/bossInfo/bossInfo'
 import './index.css'
 
 
@@ -19,9 +20,9 @@ ReactDOM.render((
         <BrowserRouter>
             <div>
                 <AuthRouter></AuthRouter>
+                <Route path='/bossInfo' component={BossInfo}></Route>
                 <Route path='/login' component={Login}></Route>
                 <Route path='/register' component={Register}></Route>
-                {/* <Redirect to='/login'></Redirect> */}
             </div>
         </BrowserRouter>
     </Provider>
