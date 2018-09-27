@@ -1,4 +1,4 @@
-export function getRedirectPath(type,avatar){
+export function getRedirectPath({type,avatar}){
     // 根据用户信息跳转地址
     let url = (type==='bose')?'/boss':'genius'
     if(!avatar){

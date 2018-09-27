@@ -1,9 +1,8 @@
 import axios from 'axios'
 import {getRedirectPath} from '../util'  //获取跳转路径
 // type
-const REGISTER_SUCCESS='REGISTER_SUCCESS'
+const AUTH_SUCCESS='AUTH_SUCCESS'
 const ERROR_MSG='ERROR_MSG'
-const LONGIN_SUCCESS='LONGIN_SUCCESS'
 const LOAD_DATA='LOAD_DATA'
 
 const initState={
@@ -16,8 +15,7 @@ const initState={
 export function user(state=initState,action){
     switch(action.type){
         case ERROR_MSG:return {...state,msg:action.msg}
-        case REGISTER_SUCCESS:return {...state,isAuth:true,redirectTo:getRedirectPath(action.payload),...action.payload}
-        case LONGIN_SUCCESS:return {...state,isAuth:true,redirectTo:getRedirectPath(action.payload),...action.payload}
+        case AUTH_SUCCESS:return {...state,isAuth:true,redirectTo:getRedirectPath(action.payload),...action.payload}
         case LOAD_DATA:return {...state,...action.payload}
         default : return state
     }
@@ -27,12 +25,21 @@ export function user(state=initState,action){
 function error_msg(msg){
     return {msg,type:ERROR_MSG}
 }
-function register_success(data){
-    return {type:REGISTER_SUCCESS,payload:data}
+function authSuccess(data){
+    return {type:AUTH_SUCCESS,payload:data}
 }
-function login_success(data){
-    return {type:LONGIN_SUCCESS,payload:data}
+export function update(data){
+    return dispatch=>{
+        axios.post('/user/update',data).then(res=>{
+            if(res.status===200&&res.data.code===0){
+                dispatch(authSuccess(res.data.data))
+            }else{
+                dispatch(error_msg(res.data.msg))
+            }
+        })
+    }
 }
+
 
 export function loadData(userInfo){
     return {type:LOAD_DATA,payload:userInfo}
@@ -50,7 +57,7 @@ export function register({user,pwd,repeatpwd,type}){
             .then(res=>{
                 console.log(res)
                 if(res.status===200&&res.data.code===0){
-                    dispatch(register_success({user,pwd,repeatpwd,type}))
+                    dispatch(authSuccess({user,pwd,repeatpwd,type}))
                 }else{ 
                     dispatch(error_msg(res.date.msg))
                 }
@@ -65,7 +72,7 @@ export function login({user,pwd}){
         axios.get('/user/login',{user,pwd})
         .then(res=>{
             if(res.status===200&&res.data.code===0){
-                dispatch(login_success(res.data))
+                dispatch(authSuccess(res.data))
             }else{
                 dispatch(error_msg(res.data.msg))
             }

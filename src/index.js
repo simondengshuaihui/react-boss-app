@@ -10,6 +10,7 @@ import Login from './container/login/login'
 import Register from './container/register/Register'
 import AuthRouter from './component/authRouter/authRouter'
 import BossInfo from './container/bossInfo/bossInfo'
+import GeniusInfo from './container/geniusInfo/geniusInfo'
 import './index.css'
 
 
@@ -21,6 +22,7 @@ ReactDOM.render((
             <div>
                 <AuthRouter></AuthRouter>
                 <Route path='/bossInfo' component={BossInfo}></Route>
+                <Route path='/geniusInfo' component={GeniusInfo}></Route>
                 <Route path='/login' component={Login}></Route>
                 <Route path='/register' component={Register}></Route>
             </div>

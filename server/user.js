@@ -47,6 +47,21 @@ Router.post('/register',function(req,res){
 
     })
 })
+Router.post('/update',function(req,res){
+    // 先查看userid
+    const userId=req.cookies.userid
+    if(!userId){
+        return res.json({code:1})
+    }
+    const body=req.body
+    User.findByIdAndUpdate(userId,body,function(err,doc){
+        const data=Object.assign({},{
+            user:doc.user,
+            type:doc.type
+        },body)
+        res.json({code:0,data})
+    })
+})
 Router.get('/info',function(req,res){
     // 如果cookie里没有用户信息
     const {userid}=req.cookies
