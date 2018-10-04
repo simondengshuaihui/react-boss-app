@@ -10,9 +10,10 @@ const _filter = {'pwd':0,'__v':0}  //控制返回数据不显示密码，不显�
 // console.log('我是user',User.find)
 
 Router.get('/list',function(req,res){
-    User.find({},function(err,doc){
+    const {type} = req.query
+    User.find({type},function(err,doc){
         // User.remove({},function(e,d){})
-		return res.json(doc)
+		return res.json({code:0,data:doc})
 	})
 })
 

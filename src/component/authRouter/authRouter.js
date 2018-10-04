@@ -13,16 +13,18 @@ class AuthRouter extends React.Component{
     }
     componentDidMount(){
         const publicList = ['/login','/register']
-		const pathname = this.props.location.pathname
+        const pathname = this.props.location.pathname
+        // 如果直接访问就跳转到相应页面不获取用户信息，不直接访问login和register就需要获取用户信息验证权限
 		if (publicList.indexOf(pathname)>-1) {
 			return null
         }
-        // 获取用户信息
+        // 
         axios.get('/user/info').then(res=>{
             // console.log(props)
             if(res.status===200){
                 if(res.data.code===0){
                     this.props.loadData(res.data.data)
+                    // this.props.history.push('/login')
                 }else{
                     this.props.history.push('/login')
                 }

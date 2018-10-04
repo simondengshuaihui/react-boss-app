@@ -23,6 +23,7 @@ class GeniusInfo extends React.Component{
     render(){
         const redirect=this.props.redirectTo
         const path=this.props.location.pathName
+        console.log()
         return (
             <div>
                 {redirect&&redirect!==path?<Redirect to={this.props.redirectTo}></Redirect>:null}
@@ -35,7 +36,7 @@ class GeniusInfo extends React.Component{
                 <List>
                     <InputItem onChange={(v)=>{this.handleChange('title',v)}}>应聘职位</InputItem>
                     <TextareaItem 
-                    onChange={(v)=>{this.handleChange('salary',v)}}
+                    onChange={(v)=>{this.handleChange('desc',v)}}
                     title='职位描述' rows={3} autoHeight></TextareaItem>
                 </List>
                 <Button onClick={()=>{this.props.update(this.state)}} type='primary'>保存</Button>

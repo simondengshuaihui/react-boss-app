@@ -3,7 +3,6 @@ import Logo from '../../component/logo/logo'
 import {InputItem,WingBlank,WhiteSpace,Button,List,Radio} from 'antd-mobile'
 import {register} from '../../redux/user.redux'
 import { connect } from 'react-redux';
-import Axios from 'axios';
 import {Redirect} from 'react-router-dom'
 
 @connect(state=>state.user,{register})
