@@ -5,15 +5,25 @@ import { connect } from "react-redux";
 import NavLinkBar from "../navlink/navlink";
 import Boss from "../boss/boss";
 import Genius from "../gunius/gunius";
+import { getMsgList, sendMsg, recvMsg } from "../../redux/chat.redux";
+import User from '../user/user'
 
 function Msg() {
   return <h2>消息列表页</h2>;
 }
-function User() {
-  return <h2>个人中心页</h2>;
-}
-@connect(state => state)
+@connect(
+  state => state,
+  { getMsgList, recvMsg }
+)
 class DashBoard extends React.Component {
+  // 挂载后开始获取用户聊天列表
+  componentDidMount() {
+    // 没有数据才去请求，避免来回切换重复添加
+    if (!this.props.chat.chatmsg.length) {
+      this.props.getMsgList();
+      this.props.recvMsg(); //开始接收消息
+    }
+  }
   render() {
     const { pathname } = this.props.location;
     // console.log(pathname)
@@ -53,7 +63,9 @@ class DashBoard extends React.Component {
     return (
       <div>
         <NavBar className="fixd-header" mode="dark">
-          {pathname!=='/'?navList.find(v=>v.path===pathname).title:null}
+          {pathname !== "/"
+            ? navList.find(v => v.path === pathname).title
+            : null}
           {/* {navList[0].title} */}
         </NavBar>
         {/* 主体内容 */}

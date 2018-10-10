@@ -38,7 +38,7 @@ function error_msg(msg) {
   return { msg, type: ERROR_MSG };
 }
 function authSuccess(data) {
-  return { type: AUTH_SUCCESS, payload: data };
+  return { type: AUTH_SUCCESS, payload: data.data };
 }
 export function update(data) {
   return dispatch => {
