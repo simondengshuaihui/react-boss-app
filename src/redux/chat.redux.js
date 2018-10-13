@@ -17,7 +17,7 @@ const MSG_READ = "MSG_READ";
 export function chat(state = initState, action) {
   switch (action.type) {
     case MSG_LIST:
-    console.log(action)
+      // console.log(action);
       return {
         ...state,
         chatmsg: action.payload.msgs,
@@ -27,8 +27,18 @@ export function chat(state = initState, action) {
         users: action.payload.users
       };
     case MSG_READ:
-      return {};
+      // 把所有from===对方id的read都改为true
+      const { from, num } = action.payload;
+      return {
+        ...state,
+        chatmsg: state.chatmsg.map(v => ({
+          ...v,
+          read: v.from === from ? true : false
+        })),
+        unread: state.unread - num
+      };
     case MSG_RECV:
+    // 对方发来的消息才加1
       const n = action.payload.msg.to === action.payload.userid ? 1 : 0;
       return {
         ...state,
@@ -45,7 +55,20 @@ function msgList(msgs, users, userid) {
 function msgRecv(msg, userid) {
   return { type: MSG_RECV, payload: { msg, userid } };
 }
-
+function msgRead(data) {
+  return { type: MSG_READ, payload: data }; 
+}
+export default function readMsg(from) {
+  return (dispatch, getState) => {
+    // 消除的是对方发过来的消息,from为对方的id
+    const userid = getState().user._id;
+    axios.post("/user/readmsg", { from }).then(res => {
+      if (res.status === 200 && res.data.code === 0) {
+        dispatch(msgRead({ userid, from, num: res.data.num }));
+      }
+    });
+  };
+}
 export function recvMsg() {
   return (dispatch, getState) => {
     const userid = getState().user._id;

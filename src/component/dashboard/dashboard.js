@@ -7,10 +7,8 @@ import Boss from "../boss/boss";
 import Genius from "../gunius/gunius";
 import { getMsgList, sendMsg, recvMsg } from "../../redux/chat.redux";
 import User from '../user/user'
+import Msg from '../msg/msg'
 
-function Msg() {
-  return <h2>消息列表页</h2>;
-}
 @connect(
   state => state,
   { getMsgList, recvMsg }

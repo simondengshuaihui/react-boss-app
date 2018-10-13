@@ -1,12 +1,12 @@
 import React from "react";
 import { List, InputItem, NavBar, Grid, Icon } from "antd-mobile";
 import { connect } from "react-redux";
-import { getMsgList, sendMsg, recvMsg } from "../../redux/chat.redux";
+import { getMsgList, sendMsg, recvMsg,readMsg } from "../../redux/chat.redux";
 import { getChatId } from "../../util";
 
 @connect(
   state => state,
-  { getMsgList, sendMsg, recvMsg }
+  { getMsgList, sendMsg, recvMsg,readMsg }
 )
 class Chat extends React.Component {
   constructor(props) {
@@ -24,8 +24,14 @@ class Chat extends React.Component {
       this.props.recvMsg();
     }
   }
+  componentWillUnmount(){
+    // 退出组件之前消除未读消息
+    const from=this.props.match.params.userid
+    // const from = this.props.user._id
+    readMsg({from})
+  }
   handleSubmit(val) {
-    console.log("发送");
+    // console.log("发送");
     const from = this.props.user._id;
     const to = this.props.match.params.userid;
     const msg = this.state.text;
@@ -46,7 +52,7 @@ class Chat extends React.Component {
     const userid = this.props.match.params.userid; //目标用户id
     const users = this.props.chat.users;
     const Item = List.Item;
-    console.log("聊天对象", users);
+    // console.log("聊天对象", users);
     // 如果没有用户则不渲染
     if (!users) {
       return null;
@@ -77,7 +83,7 @@ class Chat extends React.Component {
             <List key={v._id}>
               <Item thumb={avatar} >{v.content}</Item>
             </List>
-          ) : (
+          ) : ( 
             //   自己发的
             <List key={v._id} className="chat-me">
               <Item extra={<img src={avatar} />} >

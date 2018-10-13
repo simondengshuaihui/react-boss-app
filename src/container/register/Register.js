@@ -22,11 +22,11 @@ class Register extends React.Component{
         this.setState({
             [key]:val
         })
-    }
+    } 
     handleRegister(){
         this.props.register(this.state)
         // console.log(this.state)
-        // Axios.get('/user/info',function(res){
+        // Axios.get('/user/info',function(res){ 
         //     console.log(res)
         // })
     }

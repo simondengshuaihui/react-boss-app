@@ -22,6 +22,7 @@ ReactDOM.render((
     <Provider store={store}>
         <BrowserRouter>
             <div>
+                {/* 去任何路由都要先进行权限验证，先获取用户信息 */}
                 <AuthRouter></AuthRouter>
                 <Switch>
                     <Route path='/bossInfo' component={BossInfo}></Route>

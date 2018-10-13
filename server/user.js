@@ -8,13 +8,29 @@ const Chat = model.getModel("chat");
 const _filter = { pwd: 0, __v: 0 }; //控制返回数据不显示密码，不显示文档号
 
 // console.log('我是user',User.find)
-
+// 获取用户列表
 Router.get("/list", function(req, res) {
   const { type } = req.query;
   User.find({ type }, function(err, doc) {
     // User.remove({},function(e,d){})
     return res.json({ code: 0, data: doc });
   });
+});
+// 设置已读消息
+Router.post("/readmsg", function(req, res) {
+  const { from } = req.body;
+  const userid = req.cookies.userid;
+  Chat.update(
+    { from, to: userid },
+    { '$set': { read: true } },
+    { 'multi': true }, //多行修改,默认只修改第一个找的
+    function(err, doc) {
+      if(!err){
+        return res.json({code:0,data:doc})
+      }
+      return res.json({code:1,msg:'信息读取错误'})
+    }
+  );
 });
 // 获取消息列表
 Router.get("/getmsglist", function(req, res) {
@@ -33,7 +49,7 @@ Router.get("/getmsglist", function(req, res) {
     });
   });
 });
-
+// 登录
 Router.post("/login", function(req, res) {
   const { user, pwd } = req.body;
   User.findOne({ user, pwd: md5Pwd(pwd) }, _filter, function(err, doc) {
@@ -45,7 +61,7 @@ Router.post("/login", function(req, res) {
     return res.json({ code: 0, data: doc });
   });
 });
-
+// 注册
 Router.post("/register", function(req, res) {
   const { user, pwd, type } = req.body;
   // 查询用户名重复
@@ -64,6 +80,7 @@ Router.post("/register", function(req, res) {
     });
   });
 });
+// 跟新用户信息
 Router.post("/update", function(req, res) {
   // 先查看userid
   const userId = req.cookies.userid;
@@ -83,6 +100,7 @@ Router.post("/update", function(req, res) {
     res.json({ code: 0, data });
   });
 });
+// 获取用户信息
 Router.get("/info", function(req, res) {
   // 如果cookie里没有用户信息
   const { userid } = req.cookies;
