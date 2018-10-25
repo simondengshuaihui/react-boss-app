@@ -58,7 +58,7 @@ function msgRecv(msg, userid) {
 function msgRead(data) {
   return { type: MSG_READ, payload: data }; 
 }
-export default function readMsg(from) {
+export function readMsg(from) {
   return (dispatch, getState) => {
     // 消除的是对方发过来的消息,from为对方的id
     const userid = getState().user._id;
