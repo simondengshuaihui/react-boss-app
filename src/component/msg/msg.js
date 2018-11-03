@@ -34,14 +34,18 @@ class Msg extends React.Component {
           // 聊天对象的id
           const targetId = v[0].from === userid ? v[0].to : v[0].from;
           return (
-            <List key={v._id}>
+            <List key={lastMsg._id}
+            onClick={() => {
+              console.log(1111);
+              this.props.history.push(`/chat/${targetId}`);
+            }}
+            >
               <Item
                 thumb={require(`../img/${
                   this.props.chat.users[targetId].avatar
                 }.png`)}
-                extra={<Badge>{unreadNum}</Badge>}
+                extra={<Badge text={unreadNum} />}
                 arrow="horizontal"
-                onClick={this.props.history.push(`/chat/${targetId}`)}
               >
                 {lastMsg.content}
                 <Brief>{this.props.chat.users[targetId].name}</Brief>

@@ -25,10 +25,12 @@ class Chat extends React.Component {
     }
   }
   componentWillUnmount(){
+    console.log('消除消息')
     // 退出组件之前消除未读消息
     const from=this.props.match.params.userid
     // const from = this.props.user._id
-    readMsg({from})
+    this.props.readMsg(from)
+
   }
   handleSubmit(val) {
     // console.log("发送");
@@ -38,6 +40,7 @@ class Chat extends React.Component {
     this.props.sendMsg({ from, to, msg });
     this.setState({ text: "",showEmoji:false });
   }
+  // 修表情框的bug
   fixCarousel() {
     setTimeout(function() {
       window.dispatchEvent(new Event("resize"));

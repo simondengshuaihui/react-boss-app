@@ -33,13 +33,14 @@ export function chat(state = initState, action) {
         ...state,
         chatmsg: state.chatmsg.map(v => ({
           ...v,
-          read: v.from === from ? true : false
+          read: v.from == from ? true : v.read
         })),
         unread: state.unread - num
       };
     case MSG_RECV:
     // 对方发来的消息才加1
       const n = action.payload.msg.to === action.payload.userid ? 1 : 0;
+      console.log(action.payload.msg.to,action.payload.userid)
       return {
         ...state,
         chatmsg: [...state.chatmsg, action.payload.msg],
@@ -62,8 +63,10 @@ export function readMsg(from) {
   return (dispatch, getState) => {
     // 消除的是对方发过来的消息,from为对方的id
     const userid = getState().user._id;
-    axios.post("/user/readmsg", { from }).then(res => {
+    axios.post("/user/readmsg", {from} ).then(res => {
+      // console.log({ userid, from, num: res.data.num })
       if (res.status === 200 && res.data.code === 0) {
+        // console.log({ userid, from, num: res.data.num })
         dispatch(msgRead({ userid, from, num: res.data.num }));
       }
     });
@@ -71,8 +74,11 @@ export function readMsg(from) {
 }
 export function recvMsg() {
   return (dispatch, getState) => {
-    const userid = getState().user._id;
+    
     socket.on("recvmsg", function(data) {
+      // getState异步获取数据
+      const userid = getState().user._id;
+      console.log('获取',getState())
       dispatch(msgRecv(data, userid));
     });
   };

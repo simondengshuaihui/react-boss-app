@@ -18,15 +18,17 @@ Router.get("/list", function(req, res) {
 });
 // 设置已读消息
 Router.post("/readmsg", function(req, res) {
-  const { from } = req.body;
+  const {from} = req.body;
   const userid = req.cookies.userid;
+  console.log(req.body)
   Chat.update(
     { from, to: userid },
     { '$set': { read: true } },
     { 'multi': true }, //多行修改,默认只修改第一个找的
     function(err, doc) {
+      console.log(doc)
       if(!err){
-        return res.json({code:0,data:doc})
+        return res.json({code:0,num:doc.nModified})
       }
       return res.json({code:1,msg:'信息读取错误'})
     }
