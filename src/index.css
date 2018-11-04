@@ -45,3 +45,6 @@
 	position: relative;
 	z-index:102;
 }
+.err-content{
+	margin: 50px auto;
+}
