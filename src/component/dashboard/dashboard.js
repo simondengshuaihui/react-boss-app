@@ -1,5 +1,5 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route,Redirect } from "react-router-dom";
 import { NavBar } from "antd-mobile";
 import { connect } from "react-redux";
 import NavLinkBar from "../navlink/navlink";
@@ -59,23 +59,21 @@ class DashBoard extends React.Component {
         component: User
       }
     ];
-    const page = navList.find(v => v.path === pathname);
+    const page = navList.find(v => v.path == pathname);
     return (
       <div>
         <NavBar className="fixd-header" mode="dark">
-          {pathname !== "/" ? page.title : null}
+          {pathname !== "/" ? navList.find(v => v.path == pathname).title : null}
           {/* {navList[0].title} */}
         </NavBar>
+
         {/* 主体内容 */}
         <div style={{ marginTop: 45 }}>
-          {/* <Switch>
-            {navList.map(v => (
-              <Route key={v.path} path={v.path} component={v.component} />
-            ))}
-          </Switch> */}
+        {pathname==='/'||pathname==='/dashboard'?<Redirect to='/genius' />:null}
+           {/*让动画生效只渲染一个Route，根据当前的path决定组件*/}
           <QueueAnim type="bottom" duration={500} >
-            <Route key={page.path} path={page.path} component={page.component} />
-
+          {/* 错误预防处理page为undifined时不执行下面的语句 */}
+            <Route key={page&&page.path} path={page&&page.path} component={page&&page.component} />  
           </QueueAnim>
         </div>
         <NavLinkBar data={navList} />

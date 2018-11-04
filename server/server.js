@@ -5,6 +5,7 @@ const bodyParser=require('body-parser')//使用post请求的时候用到
 const model  = require('./model')
 const Chat = model.getModel('chat')
 const app = express()
+const path = require('path')
 
 // express和socket关联
 const server = require('http').Server(app)
@@ -29,6 +30,16 @@ io.on('connection',(socket)=>{
 app.use(cookieParser())
 app.use(bodyParser.json()) //可以解析post的json
 app.use('/user',userRouter)
+// 拦截user请求
+app.use(function(req,res,next){
+    console.log('打印',req,res,next)
+    if(req.url.startsWith('/user/')||req.url.startsWith('/static/')){
+        return next()
+    }else{
+        res.sendFile(path.resolve('build/index.html'))
+    }
+})
+app.use('/',express.static(path.resolve('build')))
 
 
 //  监听app
