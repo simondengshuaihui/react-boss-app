@@ -1,12 +1,13 @@
 import React from "react";
 import { List, InputItem, NavBar, Grid, Icon } from "antd-mobile";
 import { connect } from "react-redux";
-import { getMsgList, sendMsg, recvMsg,readMsg } from "../../redux/chat.redux";
+import { getMsgList, sendMsg, recvMsg, readMsg } from "../../redux/chat.redux";
 import { getChatId } from "../../util";
+import  QueueAnim  from "rc-queue-anim";
 
 @connect(
   state => state,
-  { getMsgList, sendMsg, recvMsg,readMsg }
+  { getMsgList, sendMsg, recvMsg, readMsg }
 )
 class Chat extends React.Component {
   constructor(props) {
@@ -24,13 +25,12 @@ class Chat extends React.Component {
       this.props.recvMsg();
     }
   }
-  componentWillUnmount(){
-    console.log('消除消息')
+  componentWillUnmount() {
+    console.log("消除消息");
     // 退出组件之前消除未读消息
-    const from=this.props.match.params.userid
+    const from = this.props.match.params.userid;
     // const from = this.props.user._id
-    this.props.readMsg(from)
-
+    this.props.readMsg(from);
   }
   handleSubmit(val) {
     // console.log("发送");
@@ -38,7 +38,7 @@ class Chat extends React.Component {
     const to = this.props.match.params.userid;
     const msg = this.state.text;
     this.props.sendMsg({ from, to, msg });
-    this.setState({ text: "",showEmoji:false });
+    this.setState({ text: "", showEmoji: false });
   }
   // 修表情框的bug
   fixCarousel() {
@@ -79,22 +79,23 @@ class Chat extends React.Component {
           {/*通过userid查到User用户名*/}
           {users[userid].name}
         </NavBar>
-        {chatmsg.map(v => {
-          const avatar = require(`../img/${users[v.from].avatar}.png`);
-          return v.from === userid ? (
-            //  对方发来的
-            <List key={v._id}>
-              <Item thumb={avatar} >{v.content}</Item>
-            </List>
-          ) : ( 
-            //   自己发的
-            <List key={v._id} className="chat-me">
-              <Item extra={<img src={avatar} />} >
-                {v.content}
-              </Item>
-            </List>
-          );
-        })}
+        <QueueAnim>
+          {chatmsg.map(v => {
+            const avatar = require(`../img/${users[v.from].avatar}.png`);
+            return v.from === userid ? (
+              //  对方发来的
+              <List key={v._id}>
+                <Item thumb={avatar}>{v.content}</Item>
+              </List>
+            ) : (
+              //   自己发的
+              <List key={v._id} className="chat-me">
+                <Item extra={<img src={avatar} alt=""/>}>{v.content}</Item>
+              </List>
+            );
+          })}
+        </QueueAnim>
+
         {/* 输入框 */}
         <div className="stick-footer">
           <List>
