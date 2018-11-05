@@ -1,6 +1,5 @@
 import React from 'react'
 import './logo.css'
-import LogoImg from './job.png'
 
 class Logo extends React.Component{
     // constructor(props){
@@ -9,7 +8,7 @@ class Logo extends React.Component{
     render(){
         return (
             <div className='logo-contanier'>
-                <img src={LogoImg} alt="logo"/>
+                <img src={require('./job.png')} alt="logo"/>
             </div>
         )
     }
